@@ -81,8 +81,7 @@ class Document(BaseModel):
     metadata: Optional[Dict[str, Any]] = None
 
     def properties_as_yaml(self) -> str:
-        yaml_out = yaml.dump(self.extracted_properties, sort_keys=False)
-        return yaml_out
+        return yaml.dump(self.extracted_properties, sort_keys=False)
 
     def extract(self, *, properties: List[ExtractProperty]) -> 'DocumentTransformationBuilder':
         transformation_builder = DocumentTransformationBuilder(self)
@@ -186,6 +185,12 @@ class Doctran:
         if not uri:
             uri = str(uuid.uuid4())
         if content_type == ContentType.text.value:
-            # TODO: Optional chunking for documents that are too large
-            document = Document(id=str(uuid.uuid4()), content_type=content_type, raw_content=content, transformed_content=content, config=self.config, uri=uri, metadata=metadata)
-            return document
+            return Document(
+                id=str(uuid.uuid4()),
+                content_type=content_type,
+                raw_content=content,
+                transformed_content=content,
+                config=self.config,
+                uri=uri,
+                metadata=metadata,
+            )
